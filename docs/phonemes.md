@@ -1,8 +1,8 @@
 # Phonemes (phonetic transcription)
 
-`get_phonemes()` exposes the AhoTTS_Iparrahotsa linguistic front end as phonemes
-without synthesizing audio, so it can be used as a grapheme-to-phoneme (G2P)
-component on its own.
+`get_phonemes()` exposes the AhoTTS_Iparrahotsa linguistic front end as phonemes,
+without synthesizing audio. You can use it as a standalone grapheme-to-phoneme (G2P)
+component.
 
 ```python
 from pyahotts_iparrahotsa import AhoTTSIparrahotsa, SAMPA_TO_IPA
@@ -14,13 +14,13 @@ tts.get_phonemes("Hau eta hori.", lang="eu", ipa=True)
 ## Output format
 
 - A **list of words**; each word is a **list of phone tokens** in order.
-- **Lexical stress** is a leading `'` on the stressed nucleus (e.g. `"'o"`).
-- Phones are **SAMPA** by default, or **IPA** when `ipa=True`.
+- **Lexical stress** appears as a leading `'` on the stressed nucleus (for example `"'o"`).
+- Phones are **SAMPA** by default, or **IPA** when you pass `ipa=True`.
 
 ## How it is produced
 
-Internally the engine runs the full linguistic pipeline with the Northern dialect
-(`PhTIparralde`) rules, and the transcription is read off the resolved utterance:
+Internally, the engine runs the full linguistic pipeline with the Northern dialect
+(`PhTIparralde`) rules, and reads the transcription off the resolved utterance:
 
 ```
 text
@@ -31,14 +31,14 @@ text
  → SAMPA phone names (canonical, from the engine's phone table)
 ```
 
-The native side walks the utterance one word at a time, emitting the canonical
-SAMPA for each phone (via the engine's `phone_tosampa` table), with `'` prefixed on
-stressed nuclei. Pause/silence phones are dropped; word boundaries separate the
+The native side walks the utterance one word at a time. It emits the canonical SAMPA
+for each phone through the engine's `phone_tosampa` table, with `'` prefixed on
+stressed nuclei. Pause and silence phones are dropped; word boundaries separate the
 lists.
 
 ## Northern dialect phones
 
-The Iparralde rules surface phones absent from (or different in) the Southern V1
+The Iparralde rules surface phones absent from, or different in, the Southern V1
 engine:
 
 | SAMPA | IPA | feature |
@@ -51,9 +51,9 @@ engine:
 
 ## SAMPA → IPA
 
-`ipa=True` maps each phone through `SAMPA_TO_IPA` (importable from
-`pyahotts_iparrahotsa`). The base mapping matches the one shipped with the Aholab
-phonemizer, extended with the Northern phones above:
+When you pass `ipa=True`, the method maps each phone through `SAMPA_TO_IPA`
+(importable from `pyahotts_iparrahotsa`). The base mapping matches the one shipped
+with the Aholab phonemizer, extended with the Northern phones above:
 
 | SAMPA | IPA | | SAMPA | IPA | | SAMPA | IPA |
 |---|---|---|---|---|---|---|---|
@@ -64,12 +64,15 @@ phonemizer, extended with the Northern phones above:
 | `rr` | r | | `R` | ʁ | | `h` | h |
 | `y` | y | | `Y` | ø | | `jj` | ʝ |
 
-(Full table in `pyahotts_iparrahotsa.SAMPA_TO_IPA`.) Stress marks are preserved
-across the conversion.
+(Full table in `pyahotts_iparrahotsa.SAMPA_TO_IPA`.) Stress marks carry across the
+conversion.
 
 ## Notes & limitations
 
-- The transcription reflects the **bundled engine version**; behavior is pinned by
-  the [golden tests](testing.md).
-- AhoTTS is the *engine*; if you need a pure-Python, dependency-free G2P that
-  matches a specific AhoTTS version, see the companion port project.
+- The transcription reflects the **bundled engine version**; the [golden tests](testing.md)
+  pin its behavior.
+- AhoTTS is the *engine*. If you need a pure-Python, dependency-free G2P that matches
+  a specific AhoTTS version, see the companion port project.
+
+---
+[← Usage](usage.md) · [Home](README.md) · [Architecture →](architecture.md)
