@@ -1,7 +1,7 @@
 # Usage
 
-Everything is exposed through a single class, `AhoTTSIparrahotsa` (also exported as
-`AhoTTS` for API parity with pyAhoTTS).
+A single class, `AhoTTSIparrahotsa`, exposes everything. It is also exported as
+`AhoTTS`, for API parity with pyAhoTTS.
 
 ```python
 from pyahotts_iparrahotsa import AhoTTSIparrahotsa
@@ -16,21 +16,21 @@ tts = AhoTTSIparrahotsa()
 | `lib_path` | bundled `libhtts_<machine>.so` | path to the native library; override for unbundled architectures |
 | `data_path` | `<package>/data_tts` | directory holding `dicts/` and `voices/` |
 
-The underlying engine instance is created lazily. Only Basque (`eu`) is supported by
-this engine.
+The underlying engine instance is created lazily. This engine supports only Basque
+(`eu`).
 
 ## Synthesis — `get_tts(text, lang="eu", wav_path=None) -> bytes`
 
-Generates speech and returns raw **16-bit mono PCM @ 16 kHz** bytes. If `wav_path`
-is given, a WAV file is also written.
+Generates speech and returns raw **16-bit mono PCM @ 16 kHz** bytes. If you pass
+`wav_path`, the method also writes a WAV file.
 
 ```python
 audio = tts.get_tts("Kaixo, ongi etorri!", lang="eu", wav_path="eu.wav")
 print(len(audio), "bytes")          # empty bytes on failure
 ```
 
-- `lang`: `"eu"` (Northern Basque) — the only supported language.
-- Returns `b""` if synthesis fails (never raises for empty output).
+- `lang`: `"eu"` (Northern Basque) is the only supported language.
+- The method returns `b""` if synthesis fails. It never raises for empty output.
 
 ### Numpy / custom playback
 
@@ -43,9 +43,10 @@ samples = np.frombuffer(tts.get_tts("Kaixo!"), dtype=np.int16)
 
 ## Phonemization — `get_phonemes(text, lang="eu", ipa=False) -> list[list[str]]`
 
-Runs **only the linguistic front end** (normalization → grapheme-to-phoneme →
-syllabification → lexical stress) with the Northern dialect rules (`PhTIparralde`)
-enabled, and returns the phonetic transcription, with no audio synthesis.
+Runs **only the linguistic front end** (normalization, then grapheme-to-phoneme
+conversion, then syllabification, then lexical stress) with the Northern dialect
+rules (`PhTIparralde`) enabled. It returns the phonetic transcription, with no audio
+synthesis.
 
 ```python
 tts.get_phonemes("Hau eta hori.", lang="eu")
@@ -55,15 +56,16 @@ tts.get_phonemes("bürü", lang="eu", ipa=True)
 # [['b', 'y', 'ʁ', 'y']]   # French ü = /y/, uvular r = ʁ
 ```
 
-- Returns **one list of phones per word**, in order.
-- **Lexical stress** is carried as a leading `'` on the stressed phone.
-- `ipa=False` → SAMPA phones; `ipa=True` → IPA via the [`SAMPA_TO_IPA`](phonemes.md) table.
-- Returns `[]` if transcription fails.
+- The method returns **one list of phones per word**, in order.
+- **Lexical stress** appears as a leading `'` on the stressed phone.
+- `ipa=False` returns SAMPA phones; `ipa=True` returns IPA through the
+  [`SAMPA_TO_IPA`](phonemes.md) table.
+- The method returns `[]` if transcription fails.
 
-Number/date/abbreviation **normalization happens inside the engine**, so digits and
-abbreviations are expanded before phonemization.
+Number, date, and abbreviation **normalization happens inside the engine**, so
+digits and abbreviations expand before phonemization.
 
-See [Phonemes](phonemes.md) for the phone inventory and the SAMPA→IPA mapping.
+See [Phonemes](phonemes.md) for the phone inventory and the SAMPA-to-IPA mapping.
 
 ## Languages & voices
 
@@ -73,7 +75,10 @@ See [Phonemes](phonemes.md) for the phone inventory and the SAMPA→IPA mapping.
 
 ## Text encoding
 
-Input text is encoded to **WINDOWS-1252 (cp1252)** before reaching the engine — the
-Northern dialect README specifies this encoding (not ISO-8859-15 as in the Southern
-engine), which matters for the French accented characters (ü, ö, û, ñ). Characters
-outside cp1252 are replaced.
+The binding encodes input text to **WINDOWS-1252 (cp1252)** before it reaches the
+engine. The Northern dialect README specifies this encoding, not ISO-8859-15 as in
+the Southern engine. This matters for French accented characters (ü, ö, û, ñ).
+Characters outside cp1252 get replaced.
+
+---
+[← Installation](installation.md) · [Home](README.md) · [Phonemes →](phonemes.md)
