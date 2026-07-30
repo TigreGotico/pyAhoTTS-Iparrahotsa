@@ -1,9 +1,9 @@
 # Building libhtts
 
-The native library is built from the C/C++ sources in `src/` with CMake. A prebuilt
+CMake builds the native library from the C/C++ sources in `src/`. A prebuilt
 `libhtts_x86_64.so` is committed under `pyahotts_iparrahotsa/` and shipped in the
-wheel; you only need to build when porting to a new architecture (e.g. `aarch64`) or
-changing the engine.
+wheel. You need to build only when porting to a new architecture (for example
+`aarch64`) or changing the engine.
 
 ## Build
 
@@ -26,19 +26,22 @@ installs the `data_tts` tree.
 ## Per-architecture notes
 
 - `uname -m` selects the bundled library at runtime (`libhtts_<machine>.so`).
-- **Only `x86_64` is committed.** `aarch64` (and others) must be built locally — run
-  the build above on the target and commit `libhtts_aarch64.so`, or pass
-  `AhoTTSIparrahotsa(lib_path=...)` at runtime.
-- **When you change the C sources, rebuild *every* shipped architecture**, not just
-  the host one — otherwise the other arch's bundled `.so` goes stale.
+- **Only `x86_64` is committed.** You must build `aarch64` (and other
+  architectures) locally: run the build above on the target and commit
+  `libhtts_aarch64.so`, or pass `AhoTTSIparrahotsa(lib_path=...)` at runtime.
+- **When you change the C sources, rebuild every shipped architecture**, not just
+  the host one. Otherwise the other architecture's bundled `.so` goes stale.
 
 ## Exported symbols
 
-The build exposes the C API consumed by the Python binding — see
+The build exposes the C API the Python binding consumes. See
 [Architecture](architecture.md): `create_tts`, `synthesize_text`,
 `transcribe_text`, `free_samples`, `free_string`, `destroy_tts`.
 
 ## Regenerating phoneme golden fixtures
 
 If an engine change legitimately alters transcriptions, regenerate the e2e golden
-fixtures from a **verified** build and review the diff — see [Testing](testing.md).
+fixtures from a **verified** build and review the diff. See [Testing](testing.md).
+
+---
+[← Architecture](architecture.md) · [Home](README.md) · [Versions →](versions.md)

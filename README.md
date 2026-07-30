@@ -1,21 +1,20 @@
 # AhoTTS Iparrahotsa Python
 
-[AhoTTS_Iparrahotsa](https://github.com/aholab/AhoTTS_Iparrahotsa) is a Text-to-Speech
-conversor for **Northern (continental) Basque** — the *Iparralde* dialect. It is a
-dialect fork of the classic AhoTTS V1 engine and includes linguistic processing and a
-built voice for Northern Basque. Its acoustic engine is based on `hts_engine` and it
-uses the high-quality AhoCoder vocoder. Developed by Aholab Signal Processing
-Laboratory, at the Bilbao School of Engineering (University of the Basque Country).
+[AhoTTS_Iparrahotsa](https://github.com/aholab/AhoTTS_Iparrahotsa) is a text-to-speech
+engine for **Northern (continental) Basque** (the *Iparralde* dialect). It is a
+dialect fork of the classic AhoTTS V1 engine. It includes linguistic processing and a
+voice for Northern Basque. Its acoustic engine is based on `hts_engine`, and it uses
+the AhoCoder vocoder. Aholab Signal Processing Laboratory, at the Bilbao School of
+Engineering (University of the Basque Country), develops AhoTTS.
 
-This is the Northern-dialect counterpart of
-[pyAhoTTS](https://github.com/TigreGotico/pyAhoTTS). Differences from the Southern
-engine:
+This package is the Northern-dialect counterpart of
+[pyAhoTTS](https://github.com/TigreGotico/pyAhoTTS). The two engines differ:
 
-- **Basque-only** (`eu`); there is no Spanish module.
-- **/h/ is pronounced** as a real phone (silent in the South).
-- **French rounded vowels** ü (/y/) and ö (/ø/).
-- **Uvular r** (SAMPA `R` → IPA ʁ).
-- Input text encoding is **WINDOWS-1252 (cp1252)**, not ISO-8859-15.
+- This engine is **Basque-only** (`eu`). It has no Spanish module.
+- **/h/ is pronounced** here. It is silent in the Southern engine.
+- This engine has **French rounded vowels**: ü (/y/) and ö (/ø/).
+- This engine uses a **uvular r** (SAMPA `R` → IPA ʁ).
+- Input text uses **WINDOWS-1252 (cp1252)** encoding, not ISO-8859-15.
 
 ## Install
 
@@ -23,8 +22,8 @@ engine:
 pip install pyahotts_iparrahotsa
 ```
 
-`libhtts_x86_64.so` is bundled with the package. For other architectures (e.g.
-`aarch64`) build the library yourself (see below) and pass `lib_path`.
+The package bundles `libhtts_x86_64.so`. For other architectures (for example
+`aarch64`), build the library yourself (see below) and pass `lib_path`.
 
 ## Compile
 
@@ -37,8 +36,8 @@ make -j"$(nproc)"
 cp src/libhtts.so ../pyahotts_iparrahotsa/libhtts_$(uname -m).so
 ```
 
-> Only `x86_64` is committed. `aarch64` needs a native build (run the above on an
-> aarch64 host and commit `libhtts_aarch64.so`).
+> Only `x86_64` is committed. For `aarch64`, run the build above on an `aarch64`
+> host, then commit `libhtts_aarch64.so`.
 
 ## Usage
 
@@ -54,11 +53,11 @@ if audio_bytes:
 
 ## Phonemes (phonetic transcription)
 
-`get_tts` synthesizes audio; `get_phonemes` runs only the linguistic front end
-(number/date/abbreviation normalization, grapheme-to-phoneme, syllabification and
-lexical stress) with the Northern dialect rules (`PhTIparralde`) enabled, and returns
-the SAMPA (or IPA) transcription — the AhoTTS linguistic analysis exposed directly,
-without the acoustic stage.
+`get_tts` synthesizes audio. `get_phonemes` runs only the linguistic front end:
+number, date, and abbreviation normalization, then grapheme-to-phoneme conversion,
+then syllabification, then lexical stress. It uses the Northern dialect rules
+(`PhTIparralde`) and returns the SAMPA (or IPA) transcription. It exposes the AhoTTS
+linguistic analysis directly, without the acoustic stage.
 
 Full documentation: [`docs/`](docs/README.md).
 
@@ -68,7 +67,7 @@ from pyahotts_iparrahotsa import AhoTTSIparrahotsa
 tts = AhoTTSIparrahotsa()
 
 # one list of phones per word; lexical stress is a leading "'" on the nucleus.
-# note the leading /h/ on "Hau", "hori", "hemen" — the Northern feature.
+# note the leading /h/ on "Hau", "hori", "hemen": the Northern feature.
 tts.get_phonemes("Hau eta hori hemen daude.", lang="eu", ipa=True)
 # [['h', "'a", 'w'], ['e', 't', 'a'], ['h', "'o", 'ɾ', 'i'],
 #  ['h', 'e', 'm', "'e", 'n'], ['d', 'a', 'w', 'ð', "'e"]]
@@ -77,10 +76,18 @@ tts.get_phonemes("bürü", lang="eu", ipa=True)
 # [['b', 'y', 'ʁ', 'y']]   # French ü = /y/, uvular r = ʁ
 ```
 
+## Related projects
+
+- [pyAhoTTS](https://github.com/TigreGotico/pyAhoTTS): the Southern (standard)
+  Basque and Spanish counterpart of this package.
+- [AhoTTS_Iparrahotsa](https://github.com/aholab/AhoTTS_Iparrahotsa): the upstream
+  C/C++ engine this package binds to.
+
 ## LICENSE
 
 Read `COPYRIGHT_and_LICENSE_code.txt` and `COPYRIGHT_and_LICENSE_voices.txt`. The
-engine sources are GPL-3.0+; the voice/linguistic data is CC BY-SA 3.0.
+engine sources use the GPL-3.0+ license. The voice and linguistic data use the
+CC BY-SA 3.0 license.
 
     Basque (voice models & linguistic data):
      	Copyright: Aholab Signal Processing Laboratory, University of the Basque Country (UPV/EHU)
