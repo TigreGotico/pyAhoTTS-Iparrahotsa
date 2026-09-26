@@ -26,8 +26,8 @@ pip install .            # or: pip install -e .[test]   to run the test suite
 
 ## Building the native library
 
-The prebuilt `libhtts_x86_64.so` lives in `pyahotts_iparrahotsa/`. To rebuild from
-the C/C++ sources in `src/`:
+The prebuilt `libhtts_x86_64.so` lives in `pyahotts_iparrahotsa/`. To rebuild it from
+the C/C++ sources in `src/`, run:
 
 ```bash
 mkdir build && cd build
@@ -36,8 +36,8 @@ make -j"$(nproc)"
 cp src/libhtts.so ../pyahotts_iparrahotsa/libhtts_<arch>.so
 ```
 
-For an architecture without a bundled `.so` (e.g. `aarch64`), build it and pass the
-path explicitly:
+For an architecture without a bundled `.so` (for example `aarch64`), build it and
+pass the path explicitly:
 
 ```python
 tts = AhoTTSIparrahotsa(lib_path="/path/to/libhtts.so")
@@ -47,5 +47,8 @@ See [Building libhtts](building.md) for details on the build and the exported C 
 
 ## Supported platforms
 
-Linux `x86_64` is shipped prebuilt. `aarch64`, macOS, and Windows are not bundled;
-build `libhtts` for your platform and pass `lib_path`.
+Linux `x86_64` ships prebuilt. `aarch64`, macOS, and Windows are not bundled. Build
+`libhtts` for your platform and pass `lib_path`.
+
+---
+[Home](README.md) · [Usage →](usage.md)
